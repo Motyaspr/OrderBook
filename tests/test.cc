@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "OrderBookVector.h"
 #include "OrderBookHT.h"
+#include "OrderBookSet.h"
 #include <random>
 #include <set>
 
@@ -15,7 +16,8 @@ void check(OrderBookVector<N> &x, const std::multiset<Element> &checking) {
     }
 }
 
-void check2(OrderBookHT &x, const std::multiset<Element> &checking) {
+template<typename T>
+void check2(T &x, const std::multiset<Element> &checking) {
     auto it2 = checking.begin();
     for (auto it = x.begin(); it != x.end() && it2 != checking.end(); ++it, ++it2) {
         EXPECT_EQ(*it, *it2);
@@ -45,20 +47,22 @@ public:
         for (const auto &elem: adds) {
             book.add(elem);
             book2.add(elem);
+            book3.add(elem);
             checking.insert(elem);
-//            check(book2, checking);
         }
     }
 
     std::multiset<Element> checking;
     OrderBookHT book;
     OrderBookVector<2> book2;
+    OrderBookSet book3;
 
 };
 
 TEST_F (OrderBookCheck, orderCheck) {
     check(book2, checking);
-    check2(book, checking);
+    check2<OrderBookHT>(book, checking);
+    check2<OrderBookSet>(book3, checking);
 }
 
 TEST_F (OrderBookCheck, vwapStart) {
@@ -73,8 +77,14 @@ TEST_F (OrderBookCheck, vwapStart) {
     EXPECT_NEAR(book2.vwap(3), 12.678160, eps);
     EXPECT_NEAR(book2.vwap(4), 15.810344, eps);
     EXPECT_NEAR(book2.vwap(5), 19.932432, eps);
-
     EXPECT_NEAR(book2.vwap(11), book2.vwap(100), eps);
+
+    EXPECT_NEAR(book3.vwap(1), 10, eps);
+    EXPECT_NEAR(book3.vwap(2), 10.704918, eps);
+    EXPECT_NEAR(book3.vwap(3), 12.678160, eps);
+    EXPECT_NEAR(book3.vwap(4), 15.810344, eps);
+    EXPECT_NEAR(book3.vwap(5), 19.932432, eps);
+    EXPECT_NEAR(book3.vwap(11), book3.vwap(100), eps);
 }
 
 TEST_F(OrderBookCheck, delOrderCheck) {
@@ -88,26 +98,37 @@ TEST_F(OrderBookCheck, delOrderCheck) {
     book2.del(6);
     book2.del(2);
 
+    book3.del(20);
+    book3.del(30);
+    book3.del(6);
+    book3.del(2);
+
     checking.erase(checking.find(Element(20, 0.0, ASK)));
     checking.erase(checking.find(Element(30, 0.0, ASK)));
     checking.erase(checking.find(Element(2, 0.0, BID)));
     checking.erase(checking.find(Element(6, 0.0, BID)));
     check(book2, checking);
-    check2(book, checking);
+    check2<OrderBookHT>(book, checking);
+    check2<OrderBookSet>(book3, checking);
 }
 
 
 TEST_F(OrderBookCheck, changeVWAP) {
     book.change(Element(10, 1, BID));
     book2.change(Element(10, 1, BID));
+    book3.change(Element(10, 1, BID));
     EXPECT_NEAR(book.vwap(1), 10, eps);
     EXPECT_NEAR(book2.vwap(1), 10, eps);
+    EXPECT_NEAR(book3.vwap(1), 10, eps);
     book.change(Element(9, 2, BID));
     book2.change(Element(9, 2, BID));
+    book3.change(Element(9, 2, BID));
     EXPECT_NEAR(book.vwap(1), 10, eps);
     EXPECT_NEAR(book2.vwap(1), 10, eps);
+    EXPECT_NEAR(book3.vwap(1), 10, eps);
     EXPECT_NEAR(book.vwap(2), 12.071428, eps);
     EXPECT_NEAR(book2.vwap(2), 12.071428, eps);
+    EXPECT_NEAR(book3.vwap(2), 12.071428, eps);
 }
 
 TEST_F(OrderBookCheck, deleteAndAdd) {
@@ -121,13 +142,19 @@ TEST_F(OrderBookCheck, deleteAndAdd) {
     book2.del(8);
     book2.del(7);
 
+    book3.del(30);
+    book3.del(40);
+    book3.del(8);
+    book3.del(7);
+
     checking.erase(checking.find(Element(30, 0.0, ASK)));
     checking.erase(checking.find(Element(40, 0.0, ASK)));
     checking.erase(checking.find(Element(7, 0.0, BID)));
     checking.erase(checking.find(Element(8, 0.0, BID)));
 
     check(book2, checking);
-    check2(book, checking);
+    check2<OrderBookHT>(book, checking);
+    check2<OrderBookSet>(book3, checking);
 
     book.add(Element(30, 1, ASK));
     book.add(Element(40, 2, ASK));
@@ -139,11 +166,17 @@ TEST_F(OrderBookCheck, deleteAndAdd) {
     book2.add(Element(7, 3, BID));
     book2.add(Element(8, 4, BID));
 
+    book3.add(Element(30, 1, ASK));
+    book3.add(Element(40, 2, ASK));
+    book3.add(Element(7, 3, BID));
+    book3.add(Element(8, 4, BID));
+
     checking.insert(Element(30, 1, ASK));
     checking.insert(Element(40, 2, ASK));
     checking.insert(Element(7, 3, BID));
     checking.insert(Element(8, 4, BID));
 
     check(book2, checking);
-    check2(book, checking);
+    check2<OrderBookHT>(book, checking);
+    check2<OrderBookSet>(book3, checking);
 }

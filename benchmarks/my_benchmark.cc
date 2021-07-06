@@ -3,6 +3,7 @@
 #include <random>
 #include "OrderBookHT.h"
 #include "OrderBookVector.h"
+#include "OrderBookSet.h"
 
 
 template<typename T>
@@ -45,4 +46,5 @@ BENCHMARK_TEMPLATE(BM_BookCreate, OrderBookVector<128>)->RangeMultiplier(4)->Ran
 BENCHMARK_TEMPLATE(BM_BookCreate, OrderBookVector<256>)->RangeMultiplier(4)->Range(1 << 4, 1 << 16);
 BENCHMARK_TEMPLATE(BM_BookCreate, OrderBookVector<512>)->RangeMultiplier(4)->Range(1 << 4, 1 << 16);
 BENCHMARK_TEMPLATE(BM_BookCreate, OrderBookHT)->RangeMultiplier(4)->Range(1 << 4, 1 << 16);
+BENCHMARK_TEMPLATE(BM_BookCreate, OrderBookSet)->RangeMultiplier(4)->Range(1 << 4, 1 << 16);
 BENCHMARK_MAIN();

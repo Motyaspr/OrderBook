@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 include_directories(common)
 include_directories(Map_vector_order_book)
 include_directories(HT_list_order_book)
+include_directories(OrderBookSet)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -22,8 +23,8 @@ FetchContent_MakeAvailable(googletest googlebenchmark)
 
 enable_testing()
 
-add_executable(my_test tests/test.cc HT_list_order_book/OrderBookHT.cpp HT_list_order_book/OrderBookHT.h Map_vector_order_book/OrderBookVector.h)
-add_executable(my_bench benchmarks/my_benchmark.cc HT_list_order_book/OrderBookHT.cpp HT_list_order_book/OrderBookHT.h Map_vector_order_book/OrderBookVector.h)
+add_executable(my_test tests/test.cc HT_list_order_book/OrderBookHT.cpp HT_list_order_book/OrderBookHT.h Map_vector_order_book/OrderBookVector.h OrderBookSet/OrderBookSet.h OrderBookSet/OrderBookSet.cpp)
+add_executable(my_bench benchmarks/my_benchmark.cc HT_list_order_book/OrderBookHT.cpp HT_list_order_book/OrderBookHT.h Map_vector_order_book/OrderBookVector.h OrderBookSet/OrderBookSet.h OrderBookSet/OrderBookSet.cpp)
 
 target_link_libraries(my_test gtest_main)
 target_link_libraries(my_bench benchmark::benchmark)
@@ -33,5 +34,5 @@ include(GoogleTest)
 gtest_discover_tests(my_test)
 
 add_executable(OrderBookHT main.cpp common/Element.h HT_list_order_book/OrderBookHT.cpp HT_list_order_book/OrderBookHT.h)
-
 add_executable(OrderBookVector main2.cpp common/Element.h Map_vector_order_book/OrderBookVector.h)
+add_executable(OrderBookSet main3.cpp common/Element.h OrderBookSet/OrderBookSet.h OrderBookSet/OrderBookSet.cpp)
