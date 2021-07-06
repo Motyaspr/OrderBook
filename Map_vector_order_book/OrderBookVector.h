@@ -93,7 +93,7 @@ class OrderBookVector {
         std::multimap<std::pair<Side, double>, typename std::list<block<N>>::iterator, reverse_comparator> &current_mp =
                 elem.side == Side::ASK ? asks_mp : bids_mp;
         auto from_merge = to_merge++;
-        std::cout << from_merge->elements.size() << ' ' << to_merge->elements.size() << "\n";
+//        std::cout << from_merge->elements.size() << ' ' << to_merge->elements.size() << "\n";
         if (to_merge == current.end() || from_merge->elements.size() + to_merge->elements.size() > N)
             return;
         auto its = current_mp.equal_range({elem.side, to_merge->elements.back().price});
