@@ -62,17 +62,17 @@ TEST_F (OrderBookCheck, orderCheck) {
 }
 
 TEST_F (OrderBookCheck, vwapStart) {
-//    EXPECT_NEAR(book.vwap(1), 10, eps);
-//    EXPECT_NEAR(book.vwap(2), 10.704918, eps);
-//    EXPECT_NEAR(book.vwap(3), 12.678160, eps);
-//    EXPECT_NEAR(book.vwap(4), 15.810344, eps);
-//    EXPECT_NEAR(book.vwap(5), 19.932432, eps);
-//    EXPECT_NEAR(book.vwap(10), book.vwap(100), eps);
-//    EXPECT_NEAR(book2.vwap(1), 10, eps);
-//    EXPECT_NEAR(book2.vwap(2), 10.704918, eps);
-//    EXPECT_NEAR(book2.vwap(3), 12.678160, eps);
-//    EXPECT_NEAR(book2.vwap(4), 15.810344, eps);
-//    EXPECT_NEAR(book2.vwap(5), 19.932432, eps);
+    EXPECT_NEAR(book.vwap(1), 10, eps);
+    EXPECT_NEAR(book.vwap(2), 10.704918, eps);
+    EXPECT_NEAR(book.vwap(3), 12.678160, eps);
+    EXPECT_NEAR(book.vwap(4), 15.810344, eps);
+    EXPECT_NEAR(book.vwap(5), 19.932432, eps);
+    EXPECT_NEAR(book.vwap(10), book.vwap(100), eps);
+    EXPECT_NEAR(book2.vwap(1), 10, eps);
+    EXPECT_NEAR(book2.vwap(2), 10.704918, eps);
+    EXPECT_NEAR(book2.vwap(3), 12.678160, eps);
+    EXPECT_NEAR(book2.vwap(4), 15.810344, eps);
+    EXPECT_NEAR(book2.vwap(5), 19.932432, eps);
 
     EXPECT_NEAR(book2.vwap(11), book2.vwap(100), eps);
 }
